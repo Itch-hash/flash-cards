@@ -3,10 +3,10 @@ import { FLASH_CARDS, FlashCard } from "../constants/cards";
 
 function CurrentCard(): JSX.Element {
   const flashCard: FlashCard[] = FLASH_CARDS;
-  const [showBack, setshowBack] = useState(true);
-  const [index, setIndex] = useState(0);
+  const [showBack, setshowBack] = useState<boolean>(true);
+  const [index, setIndex] = useState<number>(0);
 
-  function handleNext() {
+  function handleNext(): void {
     if (flashCard[index + 1].id == undefined) {
       return;
     } else {
@@ -14,7 +14,7 @@ function CurrentCard(): JSX.Element {
     }
   }
 
-  function handlePrevious() {
+  function handlePrevious(): void {
     if (flashCard[index - 1].id == undefined) {
       return;
     } else {
@@ -22,7 +22,7 @@ function CurrentCard(): JSX.Element {
     }
   }
 
-  const Front = () => {
+  const Front = (): React.JSX.Element => {
     return (
       <>
         <p className="text-sm font-medium uppercase tracking-[0.16em] text-amber-700">
@@ -35,7 +35,7 @@ function CurrentCard(): JSX.Element {
     );
   };
 
-  const Back = () => {
+  const Back = (): React.JSX.Element => {
     return (
       <>
         {" "}
