@@ -1,6 +1,11 @@
-import { FLASH_CARDS } from "../constants/cards";
+import { FLASH_CARDS, FlashCard, CardProps } from "../constants/cards";
 
-function Stats(): React.JSX.Element {
+function Stats(cards: CardProps): React.JSX.Element {
+  const savedCardsExist: string | null = localStorage.getItem("cards");
+  const totalCards: FlashCard[] = savedCardsExist
+    ? JSON.parse(savedCardsExist)
+    : FLASH_CARDS;
+
   return (
     <section className="rounded-3xl border border-stone-200 bg-card p-6 shadow-float">
       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">
@@ -9,7 +14,7 @@ function Stats(): React.JSX.Element {
       <ul className="mt-4 space-y-3 text-sm text-stone-700">
         <li className="stat-row">
           <span>Total cards</span>
-          <strong>{FLASH_CARDS.length}</strong>
+          <strong>{totalCards.length}</strong>
         </li>
         <li className="stat-row">
           <span>Reviewed today</span>
