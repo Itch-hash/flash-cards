@@ -1,21 +1,19 @@
 import { useState } from "react";
-import { FLASH_CARDS, FlashCard } from "../constants/cards";
+import { CardProps } from "../constants/cards";
 
-function CurrentCard(): JSX.Element {
-  const flashCard: FlashCard[] = FLASH_CARDS;
-  const [showBack, setshowBack] = useState<boolean>(true);
+function CurrentCard({ cards, setCards }: CardProps): React.JSX.Element {
+  const [showBack, setshowBack] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
 
   function handleNext(): void {
-    if (flashCard[index + 1].id == undefined) {
+    if (index >= cards.length - 1) {
       return;
     } else {
       setIndex((i) => i + 1);
     }
   }
-
   function handlePrevious(): void {
-    if (flashCard[index - 1].id == undefined) {
+    if (index <= 0) {
       return;
     } else {
       setIndex((i) => i - 1);
@@ -29,7 +27,7 @@ function CurrentCard(): JSX.Element {
           Front
         </p>
         <p className="mt-3 text-2xl font-semibold leading-snug">
-          {flashCard[index].question}
+          {cards[index].question}
         </p>
       </>
     );
@@ -43,26 +41,28 @@ function CurrentCard(): JSX.Element {
           Back
         </p>
         <p className="mt-3 text-lg leading-relaxed text-stone-700">
-          {flashCard[index].answer}
+          {cards[index].answer}
         </p>
       </>
     );
   };
 
+  function handleDeleteCard() {}
+
   return (
-    <article className="rounded-3xl border border-stone-200 bg-card p-6 shadow-float">
+    <article className="flex flex-col rounded-3xl border border-stone-200 bg-card p-6 shadow-float">
       <div className="flex flex-row gap-4 flex-wrap">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">
           Current card
         </p>
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">
-          Difficulty is {flashCard[index].difficulty}
+          Difficulty is {cards[index].difficulty}
         </p>
       </div>
 
-      <div className="mt-5 rounded-2xl border border-stone-200 bg-white p-6">
+      <div className="mt-5 rounded-2xl border border-stone-200 bg-white p-6 flex-1">
         <Front />
-        {!showBack && (
+        {showBack && (
           <>
             <div className="my-6 h-px bg-stone-200" />
             <Back />
@@ -70,13 +70,13 @@ function CurrentCard(): JSX.Element {
         )}
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-3 select-none">
+      <div className="mt-auto flex flex-wrap gap-3 pt-6 select-none">
         <button
           className="btn-primary"
           type="button"
           onClick={() => setshowBack(!showBack)}
         >
-          {showBack ? "Show" : "Hide"} Back
+          {showBack ? "Hide" : "Show"} Back
         </button>
         <button
           className="btn-secondary select-none"
@@ -91,6 +91,13 @@ function CurrentCard(): JSX.Element {
           onClick={handleNext}
         >
           Next
+        </button>
+        <button
+          className="btn-secondary select-none"
+          type="button"
+          onClick={handleDeleteCard}
+        >
+          Delete Current Card
         </button>
       </div>
     </article>
