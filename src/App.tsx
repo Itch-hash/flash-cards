@@ -1,9 +1,16 @@
-import type { JSX } from "react";
+import { useState, type JSX } from "react";
 import Stats from "./components/Stats";
 import AddCard from "./components/AddCard";
 import CurrentCard from "./components/CurrentCard";
+import { FLASH_CARDS, FlashCard } from "./constants/cards";
 
 function App(): JSX.Element {
+  const localStorageCards: string | null = localStorage.getItem("cards");
+  const foundCards = localStorageCards
+    ? JSON.parse(localStorageCards)
+    : FLASH_CARDS;
+  const [cards, setCards] = useState<FlashCard[]>(foundCards);
+
   return (
     <main className="min-h-screen bg-shell bg-grain px-4 py-8 text-ink sm:px-6">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
@@ -17,11 +24,11 @@ function App(): JSX.Element {
         </header>
 
         <section className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-          <CurrentCard />
+          <CurrentCard cards={cards} setCards={setCards} />
 
           <aside className="space-y-6">
-            <AddCard />
-            <Stats />
+            <AddCard cards={cards} setCards={setCards} />
+            <Stats cards={cards} setCards={setCards} />
           </aside>
         </section>
       </div>
