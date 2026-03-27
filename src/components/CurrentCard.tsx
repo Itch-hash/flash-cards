@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { CardProps } from "../constants/cards";
+import { CurrentCardProps } from "../constants/cards";
 
-function CurrentCard({ cards, setCards }: CardProps): React.JSX.Element {
+function CurrentCard({ cards }: CurrentCardProps): React.JSX.Element {
   const [showBack, setshowBack] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
 
