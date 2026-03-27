@@ -6,13 +6,18 @@ export interface FlashCard {
   difficulty?: "easy" | "medium" | "hard" | "TBD";
 }
 export interface ReviewedCards {
-  date: Date;
+  date: number;
   reviewedCardIDs: number[];
 }
 
 export type Props = {
   reviewedCards: ReviewedCards;
   setReviewedCards: React.Dispatch<React.SetStateAction<ReviewedCards>>;
+};
+
+export type StatsProps = {
+  reviewedCards: ReviewedCards;
+  cards: FlashCard[];
 };
 
 export type AddCardProps = {
@@ -25,7 +30,7 @@ export type CurrentCardProps = {
 };
 
 export const defaultReviewedCards: ReviewedCards = {
-  date: new Date(),
+  date: new Date().getDate(),
   reviewedCardIDs: [],
 };
 
