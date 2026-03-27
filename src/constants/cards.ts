@@ -5,10 +5,28 @@ export interface FlashCard {
   category?: "JavaScript" | "React" | "TypeScript" | "CSS" | "HTML";
   difficulty?: "easy" | "medium" | "hard" | "TBD";
 }
+export interface ReviewedCards {
+  date: Date;
+  reviewedCardIDs: number[];
+}
 
-export type CardProps = {
+export type Props = {
+  reviewedCards: ReviewedCards;
+  setReviewedCards: React.Dispatch<React.SetStateAction<ReviewedCards>>;
+};
+
+export type AddCardProps = {
   cards: FlashCard[];
   setCards: React.Dispatch<React.SetStateAction<FlashCard[]>>;
+};
+
+export type CurrentCardProps = {
+  cards: FlashCard[];
+};
+
+export const defaultReviewedCards: ReviewedCards = {
+  date: new Date(),
+  reviewedCardIDs: [],
 };
 
 export const FLASH_CARDS: FlashCard[] = [
