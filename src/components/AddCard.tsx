@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { CardProps, FlashCard } from "../constants/cards";
+import { AddCardProps, FlashCard } from "../constants/cards";
 
-function AddCard({ cards, setCards }: CardProps): JSX.Element {
+function AddCard({ cards, setCards }: AddCardProps): JSX.Element {
   const [questionInput, setQuestionInput] = useState<string>("");
   const [answerInput, setAnswerInput] = useState<string>("");
 
