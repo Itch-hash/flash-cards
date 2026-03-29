@@ -14,14 +14,14 @@ export function checkDate(reviewedCards: ReviewedCards): number | undefined {
 }
 
 export function markCardAsReviewed(
-  id: number,
+  cardID: number,
   reviewedCards: ReviewedCards,
 ): ReviewedCards | undefined {
-  const foundID = reviewedCards.reviewedCardIDs.find((e) => e === id);
+  const foundID = reviewedCards.reviewedCardIDs.find((e) => e === cardID);
 
   if (foundID === undefined) {
     const newReviewedCardsArr: ReviewedCards = { ...reviewedCards };
-    newReviewedCardsArr.reviewedCardIDs.push(id);
+    newReviewedCardsArr.reviewedCardIDs.push(cardID);
     return newReviewedCardsArr;
   } else return undefined;
 }

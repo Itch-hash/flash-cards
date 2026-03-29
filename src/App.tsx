@@ -8,11 +8,15 @@ import {
   ReviewedCards,
   defaultReviewedCards,
 } from "./constants/cards";
+import { checkDate } from "./utils/reviewedCards";
 
 function App(): JSX.Element {
   const localStorageCards: string | null = localStorage.getItem("cards");
   const localStorageReviewedCards = localStorage.getItem("reviewedCards");
 
+  if (!localStorageCards) {
+    localStorage.setItem("cards", JSON.stringify(FLASH_CARDS));
+  }
   if (!localStorageReviewedCards) {
     localStorage.setItem("reviewedCards", JSON.stringify(defaultReviewedCards));
   }
@@ -20,12 +24,25 @@ function App(): JSX.Element {
   const foundReviewedCards: ReviewedCards = localStorageReviewedCards
     ? JSON.parse(localStorageReviewedCards)
     : defaultReviewedCards;
+
   const foundCards = localStorageCards
     ? JSON.parse(localStorageCards)
     : FLASH_CARDS;
   const [cards, setCards] = useState<FlashCard[]>(foundCards);
   const [reviewedCards, setReviewedCards] =
     useState<ReviewedCards>(foundReviewedCards);
+
+  //Resets the date on a new day
+  function handleNewDay() {
+    const todayDate: number | undefined =
+      checkDate(reviewedCards) ?? reviewedCards.date;
+
+    if (todayDate !== reviewedCards.date) {
+      const newDay: ReviewedCards = { date: todayDate, reviewedCardIDs: [] };
+      setReviewedCards(newDay);
+      localStorage.setItem("reviewedCards", JSON.stringify(newDay));
+    }
+  }
 
   return (
     <main className="min-h-screen bg-shell bg-grain px-4 py-8 text-ink sm:px-6">
@@ -44,6 +61,7 @@ function App(): JSX.Element {
             cards={cards}
             setReviewedCards={setReviewedCards}
             reviewedCards={reviewedCards}
+            handleNewDay={handleNewDay}
           />
 
           <aside className="space-y-6">

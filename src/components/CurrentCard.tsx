@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { CurrentCardProps, ReviewedCards } from "../constants/cards";
-import { markCardAsReviewed, checkDate } from "../utils/reviewedCards";
+import { markCardAsReviewed } from "../utils/reviewedCards";
 
 function CurrentCard({
   cards,
   setReviewedCards,
   reviewedCards,
+  handleNewDay,
 }: CurrentCardProps): React.JSX.Element {
   const [showBack, setshowBack] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
@@ -27,20 +28,12 @@ function CurrentCard({
     }
   }
 
-  function handleBack(index: number) {
+  function handleBack(cardID: number) {
     setshowBack(!showBack);
     if (!showBack) {
-      const todayDate: number | undefined =
-        checkDate(reviewedCards) ?? reviewedCards.date;
-
-      if (todayDate !== reviewedCards.date) {
-        const newDay = { date: todayDate, reviewedCardIDs: [] };
-        setReviewedCards(newDay);
-        localStorage.setItem("reviewedCards", JSON.stringify(newDay));
-      }
-
+      handleNewDay();
       const updatedReviewedCards: ReviewedCards | undefined =
-        markCardAsReviewed(index, reviewedCards);
+        markCardAsReviewed(cardID, reviewedCards);
 
       if (updatedReviewedCards === undefined) {
         return;
@@ -109,7 +102,7 @@ function CurrentCard({
         <button
           className="btn-primary"
           type="button"
-          onClick={() => handleBack(index)}
+          onClick={() => handleBack(cards[index].id)}
         >
           {showBack ? "Hide" : "Show"} Back
         </button>

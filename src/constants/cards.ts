@@ -24,6 +24,7 @@ export type CurrentCardProps = {
   cards: FlashCard[];
   setReviewedCards: React.Dispatch<React.SetStateAction<ReviewedCards>>;
   reviewedCards: ReviewedCards;
+  handleNewDay: () => void;
 };
 
 export const defaultReviewedCards: ReviewedCards = {
