@@ -2,14 +2,30 @@ import { useState, type JSX } from "react";
 import Stats from "./components/Stats";
 import AddCard from "./components/AddCard";
 import CurrentCard from "./components/CurrentCard";
-import { FLASH_CARDS, FlashCard } from "./constants/cards";
+import {
+  FLASH_CARDS,
+  FlashCard,
+  ReviewedCards,
+  defaultReviewedCards,
+} from "./constants/cards";
 
 function App(): JSX.Element {
   const localStorageCards: string | null = localStorage.getItem("cards");
+  const localStorageReviewedCards = localStorage.getItem("reviewedCards");
+
+  if (!localStorageReviewedCards) {
+    localStorage.setItem("reviewedCards", JSON.stringify(defaultReviewedCards));
+  }
+
+  const foundReviewedCards: ReviewedCards = localStorageReviewedCards
+    ? JSON.parse(localStorageReviewedCards)
+    : defaultReviewedCards;
   const foundCards = localStorageCards
     ? JSON.parse(localStorageCards)
     : FLASH_CARDS;
   const [cards, setCards] = useState<FlashCard[]>(foundCards);
+  const [reviewedCards, setReviewedCards] =
+    useState<ReviewedCards>(foundReviewedCards);
 
   return (
     <main className="min-h-screen bg-shell bg-grain px-4 py-8 text-ink sm:px-6">
@@ -24,11 +40,15 @@ function App(): JSX.Element {
         </header>
 
         <section className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-          <CurrentCard cards={cards} setCards={setCards} />
+          <CurrentCard
+            cards={cards}
+            setReviewedCards={setReviewedCards}
+            reviewedCards={reviewedCards}
+          />
 
           <aside className="space-y-6">
             <AddCard cards={cards} setCards={setCards} />
-            <Stats cards={cards} setCards={setCards} />
+            <Stats reviewedCards={reviewedCards} cards={cards} />
           </aside>
         </section>
       </div>
