@@ -10,11 +10,6 @@ export interface ReviewedCards {
   reviewedCardIDs: number[];
 }
 
-export type Props = {
-  reviewedCards: ReviewedCards;
-  setReviewedCards: React.Dispatch<React.SetStateAction<ReviewedCards>>;
-};
-
 export type StatsProps = {
   reviewedCards: ReviewedCards;
   cards: FlashCard[];
@@ -27,6 +22,8 @@ export type AddCardProps = {
 
 export type CurrentCardProps = {
   cards: FlashCard[];
+  setReviewedCards: React.Dispatch<React.SetStateAction<ReviewedCards>>;
+  reviewedCards: ReviewedCards;
 };
 
 export const defaultReviewedCards: ReviewedCards = {
