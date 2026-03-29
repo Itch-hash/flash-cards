@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { CurrentCardProps } from "../constants/cards";
+import { CurrentCardProps, ReviewedCards } from "../constants/cards";
+import { markCardAsReviewed, checkDate } from "../utils/reviewedCards";
 
-function CurrentCard({ cards }: CurrentCardProps): React.JSX.Element {
+function CurrentCard({
+  cards,
+  setReviewedCards,
+  reviewedCards,
+}: CurrentCardProps): React.JSX.Element {
   const [showBack, setshowBack] = useState<boolean>(false);
   const [index, setIndex] = useState<number>(0);
 
@@ -10,6 +15,7 @@ function CurrentCard({ cards }: CurrentCardProps): React.JSX.Element {
       return;
     } else {
       setIndex((i) => i + 1);
+      setshowBack(false);
     }
   }
   function handlePrevious(): void {
@@ -17,6 +23,35 @@ function CurrentCard({ cards }: CurrentCardProps): React.JSX.Element {
       return;
     } else {
       setIndex((i) => i - 1);
+      setshowBack(false);
+    }
+  }
+
+  function handleBack(index: number) {
+    setshowBack(!showBack);
+    if (!showBack) {
+      const todayDate: number | undefined =
+        checkDate(reviewedCards) ?? reviewedCards.date;
+
+      if (todayDate !== reviewedCards.date) {
+        const newDay = { date: todayDate, reviewedCardIDs: [] };
+        setReviewedCards(newDay);
+        localStorage.setItem("reviewedCards", JSON.stringify(newDay));
+      }
+
+      const updatedReviewedCards: ReviewedCards | undefined =
+        markCardAsReviewed(index, reviewedCards);
+
+      if (updatedReviewedCards === undefined) {
+        return;
+      } else {
+        console.log(updatedReviewedCards);
+        setReviewedCards(updatedReviewedCards);
+        localStorage.setItem(
+          "reviewedCards",
+          JSON.stringify(updatedReviewedCards),
+        );
+      }
     }
   }
 
@@ -74,7 +109,7 @@ function CurrentCard({ cards }: CurrentCardProps): React.JSX.Element {
         <button
           className="btn-primary"
           type="button"
-          onClick={() => setshowBack(!showBack)}
+          onClick={() => handleBack(index)}
         >
           {showBack ? "Hide" : "Show"} Back
         </button>
