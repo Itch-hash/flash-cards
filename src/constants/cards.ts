@@ -21,6 +21,7 @@ export type AddCardProps = {
 };
 
 export type CurrentCardProps = {
+  setCards: React.Dispatch<React.SetStateAction<FlashCard[]>>;
   cards: FlashCard[];
   setReviewedCards: React.Dispatch<React.SetStateAction<ReviewedCards>>;
   reviewedCards: ReviewedCards;

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { CurrentCardProps, ReviewedCards } from "../constants/cards";
+import { CurrentCardProps, FlashCard, ReviewedCards } from "../constants/cards";
 import { markCardAsReviewed } from "../utils/reviewedCards";
 
 function CurrentCard({
   cards,
+  setCards,
   setReviewedCards,
   reviewedCards,
   handleNewDay,
@@ -75,7 +76,44 @@ function CurrentCard({
     );
   };
 
-  function handleDeleteCard() {}
+  function handleDeleteCard(id: number): void {
+    if (id === undefined) {
+      return;
+    }
+
+    const localStorageCards: string | null = localStorage.getItem("cards");
+    const localReviewedCards: string | null =
+      localStorage.getItem("reviewedCards");
+
+    const foundLocalStorageCards: FlashCard[] = localStorageCards
+      ? JSON.parse(localStorageCards)
+      : console.error("No cards found, please refresh");
+    const foundReviewedCards = localReviewedCards
+      ? JSON.parse(localReviewedCards)
+      : console.error("No Reviewed Cards Found");
+
+    const filteredReviewedCardIDs = foundReviewedCards.reviewedCardIDs.filter(
+      (e: number) => e !== id,
+    );
+
+    const updatedReviewedCardIDs = {
+      ...foundReviewedCards,
+      reviewedCardIDs: filteredReviewedCardIDs,
+    };
+
+    setReviewedCards(updatedReviewedCardIDs);
+    localStorage.setItem(
+      "reviewedCards",
+      JSON.stringify(updatedReviewedCardIDs),
+    );
+
+    const filteredCards: FlashCard[] = foundLocalStorageCards.filter(
+      (e: FlashCard) => e.id !== id,
+    );
+
+    setCards(filteredCards);
+    localStorage.setItem("cards", JSON.stringify(filteredCards));
+  }
 
   return (
     <article className="flex flex-col rounded-3xl border border-stone-200 bg-card p-6 shadow-float">
@@ -89,11 +127,11 @@ function CurrentCard({
       </div>
 
       <div className="mt-5 rounded-2xl border border-stone-200 bg-white p-6 flex-1">
-        <Front />
+        {<Front />}
         {showBack && (
           <>
             <div className="my-6 h-px bg-stone-200" />
-            <Back />
+            {<Back />}
           </>
         )}
       </div>
@@ -123,7 +161,7 @@ function CurrentCard({
         <button
           className="btn-secondary select-none"
           type="button"
-          onClick={handleDeleteCard}
+          onClick={() => handleDeleteCard(cards[index].id)}
         >
           Delete Current Card
         </button>

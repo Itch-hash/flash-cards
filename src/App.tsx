@@ -1,7 +1,8 @@
-import { useState, type JSX } from "react";
+import { useEffect, useState, type JSX } from "react";
 import Stats from "./components/Stats";
 import AddCard from "./components/AddCard";
 import CurrentCard from "./components/CurrentCard";
+import NoCards from "./components/NoCards";
 import {
   FLASH_CARDS,
   FlashCard,
@@ -33,6 +34,7 @@ function App(): JSX.Element {
     useState<ReviewedCards>(foundReviewedCards);
 
   //Resets the date on a new day
+
   function handleNewDay() {
     const todayDate: number | undefined =
       checkDate(reviewedCards) ?? reviewedCards.date;
@@ -43,6 +45,10 @@ function App(): JSX.Element {
       localStorage.setItem("reviewedCards", JSON.stringify(newDay));
     }
   }
+
+  useEffect(() => {
+    handleNewDay();
+  }, []);
 
   return (
     <main className="min-h-screen bg-shell bg-grain px-4 py-8 text-ink sm:px-6">
@@ -57,12 +63,17 @@ function App(): JSX.Element {
         </header>
 
         <section className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
-          <CurrentCard
-            cards={cards}
-            setReviewedCards={setReviewedCards}
-            reviewedCards={reviewedCards}
-            handleNewDay={handleNewDay}
-          />
+          {cards.length > 0 ? (
+            <CurrentCard
+              cards={cards}
+              setCards={setCards}
+              setReviewedCards={setReviewedCards}
+              reviewedCards={reviewedCards}
+              handleNewDay={handleNewDay}
+            />
+          ) : (
+            <NoCards />
+          )}
 
           <aside className="space-y-6">
             <AddCard cards={cards} setCards={setCards} />
