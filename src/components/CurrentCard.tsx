@@ -113,6 +113,7 @@ function CurrentCard({
 
     setCards(filteredCards);
     localStorage.setItem("cards", JSON.stringify(filteredCards));
+    setIndex(filteredCards.length - 1);
   }
 
   return (
