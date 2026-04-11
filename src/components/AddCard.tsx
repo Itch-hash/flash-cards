@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { AddCardProps, FlashCard } from "../constants/cards";
+import { v4 as uuidv4 } from "uuid";
 
 function AddCard({ cards, setCards }: AddCardProps): JSX.Element {
   const [questionInput, setQuestionInput] = useState<string>("");
@@ -21,7 +22,7 @@ function AddCard({ cards, setCards }: AddCardProps): JSX.Element {
       const updatedCards: FlashCard[] = [
         ...cards,
         {
-          id: cards.length + 1,
+          id: uuidv4(),
           question: sanitizedQuestion,
           answer: sanitizedAnswer,
           difficulty: "TBD",

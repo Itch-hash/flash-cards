@@ -14,7 +14,7 @@ export function checkDate(reviewedCards: ReviewedCards): number | undefined {
 }
 
 export function markCardAsReviewed(
-  cardID: number,
+  cardID: string,
   reviewedCards: ReviewedCards,
 ): ReviewedCards | undefined {
   const foundID = reviewedCards.reviewedCardIDs.find((e) => e === cardID);

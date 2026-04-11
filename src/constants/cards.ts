@@ -1,4 +1,12 @@
 export interface FlashCard {
+  id: string;
+  question: string;
+  answer: string;
+  category?: "JavaScript" | "React" | "TypeScript" | "CSS" | "HTML";
+  difficulty?: "easy" | "medium" | "hard" | "TBD";
+}
+
+interface TestFlashCard {
   id: number;
   question: string;
   answer: string;
@@ -7,7 +15,7 @@ export interface FlashCard {
 }
 export interface ReviewedCards {
   date: number;
-  reviewedCardIDs: number[];
+  reviewedCardIDs: string[];
 }
 
 export type StatsProps = {
@@ -33,7 +41,7 @@ export const defaultReviewedCards: ReviewedCards = {
   reviewedCardIDs: [],
 };
 
-export const FLASH_CARDS: FlashCard[] = [
+export const FLASH_CARDS: TestFlashCard[] = [
   {
     id: 1,
     question: "What is the time complexity of binary search?",

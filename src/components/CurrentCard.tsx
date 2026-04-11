@@ -29,7 +29,7 @@ function CurrentCard({
     }
   }
 
-  function handleBack(cardID: number) {
+  function handleBack(cardID: string) {
     setshowBack(!showBack);
     if (!showBack) {
       handleNewDay();
@@ -76,7 +76,7 @@ function CurrentCard({
     );
   };
 
-  function handleDeleteCard(id: number): void {
+  function handleDeleteCard(id: string): void {
     if (id === undefined) {
       return;
     }
@@ -93,7 +93,7 @@ function CurrentCard({
       : console.error("No Reviewed Cards Found");
 
     const filteredReviewedCardIDs = foundReviewedCards.reviewedCardIDs.filter(
-      (e: number) => e !== id,
+      (e: string) => e !== id,
     );
 
     const updatedReviewedCardIDs = {
